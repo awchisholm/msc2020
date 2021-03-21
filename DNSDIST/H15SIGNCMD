@@ -1,0 +1,2 @@
+openssl x509 -req -days 9000 -in h15.req.chained.2  -CA TICA.crt -CAkey TICA.key -CAcreateserial -days 9000 >h15.crt.chained.2
+

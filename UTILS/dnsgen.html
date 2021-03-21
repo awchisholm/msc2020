@@ -1,0 +1,123 @@
+
+<!DOCTYPE html>
+<html>
+    
+<meta charset="UTF-8">
+
+<head>
+</head>
+<title> DNS lookup generator </title>
+
+<style>
+    .b1 {
+        background-color: brown;
+        font-size: 200%;
+        color: goldenrod;
+        border-style: ridge;
+        
+    }
+    .t1 {
+        font-size: 200%;
+    }
+    .ta1 {
+        vertical-align: bottom;
+        font-size: 200%;
+        height: 1em;
+        resize: none;
+    }
+    .d1 {
+        padding-top: 10px;
+    }
+</style>
+<body>
+    <h1> DNS lookup generator </h1>
+    <div>
+    <button class='b1' onclick="startStop()">START/STOP</button>
+    </div>
+
+    <div class = d1>
+        <label class='t1' for='maxsize'> domain max length: </label>
+        <textarea id='maxsize' class='ta1' rows=1>25</textarea>
+        <br>
+        <label class='t1' for='rate'> generation rate (/sec): </label>
+        <textarea id='rate' class='ta1' rows=1>25</textarea>
+        <table class='t1'>
+            <tr>
+                <td>
+                    Status:
+                </td>
+                <td id='status'>
+                    Not running
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Generated:
+                </td>
+                <td id='gencount'>
+                    0
+                </td>
+            </tr>
+        </table>
+    </div>    
+    <script>
+        let br = '<br>';
+        
+        var maxSize = 25;
+        var running = false;
+        var genCount = 0;
+        var interval;
+        let statusRunning = 'Running';
+        let statusNotRunning = 'Not Running';
+        var rate = 10; 
+        
+        window.onload(init());
+
+        function init(){
+            document.getElementById('maxsize').value = maxSize;
+            document.getElementById('rate').value = rate;
+        }
+
+        function doLookup()
+        {
+            var a = Math.random() * 100000000;
+            var stra = btoa(a);
+            while(stra.length < maxSize){
+                a = Math.random() * 100000000;
+                stra += btoa(a);
+            }
+
+            let b = Math.floor(Math.random() * maxSize) + 1
+            let dom = stra.substring(0,b) 
+            let fdom = "http://" + dom + ".com"
+        
+            var x = new XMLHttpRequest();
+            x.open("GET", fdom, true);
+            x.send();
+            genCount++;
+            document.getElementById('status').innerHTML = statusRunning;
+            document.getElementById('gencount').innerHTML = genCount;
+        }
+        
+        function startStop(){
+            if (running) {
+                clearInterval(interval);
+                document.getElementById('status').innerHTML = statusNotRunning;
+                running = false;
+            }
+            else {
+                rate = document.getElementById('rate').value;
+                maxSize = document.getElementById('maxsize').value;
+                if (maxSize > 250) maxSize = 250;
+                if (maxSize < 2) maxSize = 2;
+                if (rate > 1000) rate = 1000;
+                if (rate < 1) rate = 1;
+                interval = setInterval(doLookup, 1000/rate);
+                running = true;
+            }
+        }
+        </script>
+        
+</body>
+
+</html>

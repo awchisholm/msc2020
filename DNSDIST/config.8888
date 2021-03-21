@@ -1,0 +1,13 @@
+newServer({address="8.8.8.8"})
+-- newServer({address="192.168.1.254"})
+-- newServer({address="192.168.1.16"})
+addLocal('192.168.1.15')
+addDOHLocal('127.0.0.1','lh.crt.chained.2','lh.key.chained.2')
+addDOHLocal('192.168.1.15','168.chained.crt','168.chained.key')
+
+function luarule(dq)
+    print(dq.qname:toString())
+    return DNSAction.None, ""      -- no action
+end
+
+addAction(AllRule(), LuaAction(luarule))

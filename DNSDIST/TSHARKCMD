@@ -1,0 +1,1 @@
+sudo tshark -i enp0s3 -f not host 192.168.1.28 and not host 8.8.8.8 and not arp and not host 192.168.1.69

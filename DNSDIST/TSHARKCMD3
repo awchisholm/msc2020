@@ -1,0 +1,11 @@
+#! /bin/bash
+
+if [ a$1 == a ]
+then
+ tshark -i enp0s3 -f "not host 192.168.1.3 and not arp and not ip6 and not host 192.168.1.16 and not host 192.168.1.28"
+else
+ tshark -i enp0s3 -f "not host 192.168.1.3 and not arp and not ip6 and not host 192.168.1.16 and not host 192.168.1.28" -w $1
+fi
+
+
+

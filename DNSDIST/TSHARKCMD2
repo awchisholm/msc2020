@@ -1,0 +1,1 @@
+ tshark -i enp0s3 -f "not host 192.168.1.28 and not arp and not ip6"
